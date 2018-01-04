@@ -1,5 +1,7 @@
 package com.codurance.socialnetwork;
 
+import com.codurance.socialnetwork.domain.command.DisplayTimeLineCommand;
+import com.codurance.socialnetwork.domain.command.FollowUserCommand;
 import com.codurance.socialnetwork.domain.command.PostCommand;
 import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.Posts;
@@ -39,11 +41,13 @@ public class SocialNetwork {
         }
 
         if (Pattern.matches("^[A-z]+", inputCommand)) {
-            console.printLine("I love the weather today (5 minutes ago)");
+            DisplayTimeLineCommand displayTimeLineCommand = new DisplayTimeLineCommand(console);
+            displayTimeLineCommand.execute();
         }
 
         if (Pattern.matches("^[A-z]+ follows [A-z]+", inputCommand)) {
-            userRepository.addFollower("Charlie", "Alice");
+            FollowUserCommand followUserCommand = new FollowUserCommand(userRepository, "Charlie", "Alice");
+            followUserCommand.execute();
         }
     }
 }

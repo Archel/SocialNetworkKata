@@ -35,7 +35,8 @@ public class SocialNetworkFeature {
                 .willReturn("Bob")
                 .willReturn("Charlie -> I'm in New York today! Anyone wants to have a coffee?")
                 .willReturn("Charlie follows Alice")
-                .willReturn("Charlie wall");
+                .willReturn("Charlie wall")
+                .willReturn("exit");
 
         given(clock.now())
                 .willReturn(LocalDateTime.of(2018, 1, 1, 0, 0))

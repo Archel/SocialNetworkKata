@@ -30,7 +30,8 @@ public class SocialNetworkShould {
     public void
     save_a_post_when_receive_post_command() {
         given(console.readLine())
-                .willReturn("Alice -> I love the weather today");
+                .willReturn("Alice -> I love the weather today")
+                .willReturn("exit");
 
         given(clock.now())
                 .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5));
@@ -39,5 +40,22 @@ public class SocialNetworkShould {
         socialNetwork.run();
 
         verify(postRepository).save(ALICE_POST);
+    }
+
+    @Test
+    public void
+    list_a_user_timeline_when_receive_the_username() {
+        given(console.readLine())
+                .willReturn("Alice -> I love the weather today")
+                .willReturn("Alice")
+                .willReturn("exit");
+
+        given(clock.now())
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5));
+
+        SocialNetwork socialNetwork = new SocialNetwork(console, clock, postRepository);
+        socialNetwork.run();
+
+        verify(console).printLine("I love the weather today (5 minutes ago)");
     }
 }

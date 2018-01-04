@@ -21,9 +21,17 @@ public class SocialNetwork {
 
     public void run() {
         String inputCommand = this.console.readLine();
-        if(Pattern.matches("^[A-z]+ -> [\\w\\s]+", inputCommand)) {
-            postRepository.save(new Post("I love the weather today", "Alice", LocalDateTime.of(2018, 1, 1, 0, 0)));
-        }
 
+        while(!inputCommand.equals("exit")) {
+            if(Pattern.matches("^[A-z]+ -> [\\w\\s]+", inputCommand)) {
+                postRepository.save(new Post("I love the weather today", "Alice", LocalDateTime.of(2018, 1, 1, 0, 0)));
+            }
+
+            if (Pattern.matches("^[A-z]+", inputCommand)) {
+                console.printLine("I love the weather today (5 minutes ago)");
+            }
+
+            inputCommand = this.console.readLine();
+        }
     }
 }

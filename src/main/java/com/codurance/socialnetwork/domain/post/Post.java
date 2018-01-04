@@ -1,4 +1,4 @@
-package com.codurance.socialnetwork.domain;
+package com.codurance.socialnetwork.domain.post;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

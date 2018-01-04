@@ -1,9 +1,11 @@
 package com.codurance.socialnetwork;
 
-import com.codurance.socialnetwork.domain.Posts;
+import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
 import com.codurance.socialnetwork.infrastructure.post.InMemoryPostRepository;
+import com.codurance.socialnetwork.infrastructure.user.InMemoryUsersRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -43,8 +45,9 @@ public class SocialNetworkFeature {
                 .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5));
 
         Posts postRepository = new InMemoryPostRepository();
+        Users userRepository = new InMemoryUsersRepository();
 
-        SocialNetwork socialNetwork = new SocialNetwork(console, clock, postRepository);
+        SocialNetwork socialNetwork = new SocialNetwork(console, clock, postRepository, userRepository);
         socialNetwork.run();
 
         inOrder.verify(console).printLine("I love the weather today (5 minutes ago)");

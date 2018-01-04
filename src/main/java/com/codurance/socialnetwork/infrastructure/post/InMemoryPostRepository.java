@@ -1,7 +1,7 @@
 package com.codurance.socialnetwork.infrastructure.post;
 
-import com.codurance.socialnetwork.domain.Post;
-import com.codurance.socialnetwork.domain.Posts;
+import com.codurance.socialnetwork.domain.post.Post;
+import com.codurance.socialnetwork.domain.post.Posts;
 
 public class InMemoryPostRepository implements Posts {
     @Override

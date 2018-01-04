@@ -1,7 +1,8 @@
 package com.codurance.socialnetwork;
 
-import com.codurance.socialnetwork.domain.Post;
-import com.codurance.socialnetwork.domain.Posts;
+import com.codurance.socialnetwork.domain.post.Post;
+import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
 
@@ -12,11 +13,13 @@ public class SocialNetwork {
     private final Console console;
     private final Clock clock;
     private Posts postRepository;
+    private Users userRepository;
 
-    public SocialNetwork(Console console, Clock clock, Posts postRepository) {
+    public SocialNetwork(Console console, Clock clock, Posts postRepository, Users userRepository) {
         this.console = console;
         this.clock = clock;
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     public void run() {
@@ -29,6 +32,10 @@ public class SocialNetwork {
 
             if (Pattern.matches("^[A-z]+", inputCommand)) {
                 console.printLine("I love the weather today (5 minutes ago)");
+            }
+
+            if (Pattern.matches("^[A-z]+ follows [A-z]+", inputCommand)) {
+                userRepository.addFollower("Charlie", "Alice");
             }
 
             inputCommand = this.console.readLine();

@@ -27,20 +27,21 @@ public class CommandFactoryShould {
     Posts postRepository;
 
     @Mock
+    private
     Users userRepository;
 
     @Test
     public void
-    returns_a_post_command_when_receives_the_post_command_represented_as_string() {
+    returns_a_post_command_when_receives_the_post_command_represented_as_string() throws InvalidCommandException {
         CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-        Command postCommand = commandFactory.create("Alice -> Hello world!");
+        Command postCommand = commandFactory.create("Alice -> Hello world");
 
         assertThat(postCommand, instanceOf(PostCommand.class));
     }
 
     @Test
     public void
-    returns_a_display_timeline_command_when_receives_the_display_timeline_command_represented_as_string() {
+    returns_a_display_timeline_command_when_receives_the_display_timeline_command_represented_as_string() throws InvalidCommandException {
         CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
         Command displayTimeLineCommand = commandFactory.create("Alice");
 
@@ -49,10 +50,17 @@ public class CommandFactoryShould {
 
     @Test
     public void
-    returns_a_follow_user_command_when_receives_the_follow_user_command_represented_as_string() {
+    returns_a_follow_user_command_when_receives_the_follow_user_command_represented_as_string() throws InvalidCommandException {
         CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
         Command followUserCommand = commandFactory.create("Charlie follows Alice");
 
         assertThat(followUserCommand, instanceOf(FollowUserCommand.class));
+    }
+
+    @Test(expected = InvalidCommandException.class)
+    public void
+    throws_an_exception_if_the_command_represented_as_string_is_not_correct() throws InvalidCommandException {
+        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+        commandFactory.create("zxcvxzcv zvxcczxv xzcvzxc v adfsdf");
     }
 }

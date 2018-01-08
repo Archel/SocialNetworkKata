@@ -20,7 +20,7 @@ public class CommandFactory {
         this.userRepository = userRepository;
     }
 
-    public Command create(String input) {
+    public Command create(String input) throws InvalidCommandException {
         if (Pattern.matches("^[A-z]+", input)) {
             return new DisplayTimeLineCommand(console);
         }
@@ -30,7 +30,11 @@ public class CommandFactory {
             return new FollowUserCommand(userRepository, commandDetails[0], commandDetails[1]);
         }
 
-        String[] commandDetails = input.split(" -> ");
-        return new PostCommand(postRepository, commandDetails[1], commandDetails[0], clock.now());
+        if(Pattern.matches("^[A-z]+ -> [\\w\\s]+", input)) {
+            String[] commandDetails = input.split(" -> ");
+            return new PostCommand(postRepository, commandDetails[1], commandDetails[0], clock.now());
+        }
+
+        throw new InvalidCommandException();
     }
 }

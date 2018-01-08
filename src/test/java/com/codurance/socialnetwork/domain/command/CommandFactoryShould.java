@@ -5,6 +5,7 @@ import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -16,6 +17,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class CommandFactoryShould {
 
+    public static final String POST_COMMAND = "Alice -> Hello world";
+    public static final String DISPLAY_TIMELINE_COMMAND = "Alice";
+    public static final String FOLLOW_USER_COMMAND = "Charlie follows Alice";
+    public static final String AN_INVALID_COMMAND = "zxcvxzcv zvxcczxv xzcvzxc v adfsdf";
+    
     @Mock
     private Clock clock;
 
@@ -23,18 +29,22 @@ public class CommandFactoryShould {
     private Console console;
 
     @Mock
-    private
-    Posts postRepository;
+    private Posts postRepository;
 
     @Mock
-    private
-    Users userRepository;
+    private Users userRepository;
+
+    private CommandFactory commandFactory;
+
+    @Before
+    public void setUp() {
+        commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+    }
 
     @Test
     public void
     returns_a_post_command_when_receives_the_post_command_represented_as_string() throws InvalidCommandException {
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-        Command postCommand = commandFactory.create("Alice -> Hello world");
+        Command postCommand = commandFactory.create(POST_COMMAND);
 
         assertThat(postCommand, instanceOf(PostCommand.class));
     }
@@ -42,8 +52,7 @@ public class CommandFactoryShould {
     @Test
     public void
     returns_a_display_timeline_command_when_receives_the_display_timeline_command_represented_as_string() throws InvalidCommandException {
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-        Command displayTimeLineCommand = commandFactory.create("Alice");
+        Command displayTimeLineCommand = commandFactory.create(DISPLAY_TIMELINE_COMMAND);
 
         assertThat(displayTimeLineCommand, instanceOf(DisplayTimeLineCommand.class));
     }
@@ -51,8 +60,7 @@ public class CommandFactoryShould {
     @Test
     public void
     returns_a_follow_user_command_when_receives_the_follow_user_command_represented_as_string() throws InvalidCommandException {
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-        Command followUserCommand = commandFactory.create("Charlie follows Alice");
+        Command followUserCommand = commandFactory.create(FOLLOW_USER_COMMAND);
 
         assertThat(followUserCommand, instanceOf(FollowUserCommand.class));
     }
@@ -60,7 +68,6 @@ public class CommandFactoryShould {
     @Test(expected = InvalidCommandException.class)
     public void
     throws_an_exception_if_the_command_represented_as_string_is_not_correct() throws InvalidCommandException {
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-        commandFactory.create("zxcvxzcv zvxcczxv xzcvzxc v adfsdf");
+        commandFactory.create(AN_INVALID_COMMAND);
     }
 }

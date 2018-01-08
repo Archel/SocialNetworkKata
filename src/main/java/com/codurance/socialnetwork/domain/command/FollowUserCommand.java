@@ -2,7 +2,7 @@ package com.codurance.socialnetwork.domain.command;
 
 import com.codurance.socialnetwork.domain.user.Users;
 
-public class FollowUserCommand {
+public class FollowUserCommand implements Command{
     private final Users userRepository;
     private final String follower;
     private final String followed;

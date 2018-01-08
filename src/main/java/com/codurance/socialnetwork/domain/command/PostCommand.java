@@ -3,10 +3,9 @@ package com.codurance.socialnetwork.domain.command;
 import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.Posts;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class PostCommand {
+public class PostCommand implements Command {
 
     private Posts postRepository;
     private final String postMessage;

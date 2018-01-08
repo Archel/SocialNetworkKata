@@ -3,7 +3,6 @@ package com.codurance.socialnetwork;
 import com.codurance.socialnetwork.domain.command.DisplayTimeLineCommand;
 import com.codurance.socialnetwork.domain.command.FollowUserCommand;
 import com.codurance.socialnetwork.domain.command.PostCommand;
-import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
@@ -29,12 +28,12 @@ public class SocialNetwork {
         String inputCommand = this.console.readLine();
 
         while(!inputCommand.equals("exit")) {
-            commandExecutor(inputCommand);
+            executeCommand(inputCommand);
             inputCommand = this.console.readLine();
         }
     }
 
-    private void commandExecutor(String inputCommand) {
+    private void executeCommand(String inputCommand) {
         if(Pattern.matches("^[A-z]+ -> [\\w\\s]+", inputCommand)) {
             PostCommand postCommand = new PostCommand(postRepository, "I love the weather today", "Alice", LocalDateTime.of(2018, 1, 1, 0, 0));
             postCommand.execute();

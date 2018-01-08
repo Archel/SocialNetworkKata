@@ -2,7 +2,7 @@ package com.codurance.socialnetwork.domain.command;
 
 import com.codurance.socialnetwork.infrastructure.Console;
 
-public class DisplayTimeLineCommand {
+public class DisplayTimeLineCommand implements Command {
     private final Console console;
 
     public DisplayTimeLineCommand(Console console) {

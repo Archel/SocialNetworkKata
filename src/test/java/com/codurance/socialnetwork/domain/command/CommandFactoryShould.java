@@ -17,10 +17,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class CommandFactoryShould {
 
-    public static final String POST_COMMAND = "Alice -> Hello world";
-    public static final String DISPLAY_TIMELINE_COMMAND = "Alice";
-    public static final String FOLLOW_USER_COMMAND = "Charlie follows Alice";
-    public static final String AN_INVALID_COMMAND = "zxcvxzcv zvxcczxv xzcvzxc v adfsdf";
+    private static final String POST_COMMAND = "Alice -> Hello world";
+    private static final String DISPLAY_TIMELINE_COMMAND = "Alice";
+    private static final String FOLLOW_USER_COMMAND = "Charlie follows Alice";
+    private static final String AN_INVALID_COMMAND = "zxcvxzcv zvxcczxv xzcvzxc v adfsdf";
 
     @Mock
     private Clock clock;

@@ -27,6 +27,9 @@ public class SocialNetworkShould {
     private static final String ALICE_POST_PRINTED = "I love the weather today (5 minutes ago)";
     private static final String ALICE_POST_COMMAND = "Alice -> I love the weather today";
     private static final Post ALICE_POST = new Post(ALICE_MESSAGE, ALICE_USERNAME, ALICE_POST_DATE);
+    private static final String FOLLOW_COMMAND = "Charlie follows Alice";
+    private static final String INVALID_COMMAND = "asdf asdf asdf asfd asf";
+    public static final String INVALID_COMMAND_OUTPUT = "Invalid command.";
 
     @Mock
     private Console console;
@@ -82,7 +85,7 @@ public class SocialNetworkShould {
     public void
     save_the_new_follower_of_a_user() {
         given(console.readLine())
-                .willReturn("Charlie follows Alice")
+                .willReturn(FOLLOW_COMMAND)
                 .willReturn(EXIT_COMMAND);
 
         socialNetwork.run();
@@ -94,11 +97,11 @@ public class SocialNetworkShould {
     public void
     print_invalid_command_when_the_command_doesnt_exist() {
         given(console.readLine())
-                .willReturn("asdf asdf asdf asfd asf")
+                .willReturn(INVALID_COMMAND)
                 .willReturn(EXIT_COMMAND);
 
         socialNetwork.run();
 
-        verify(console).printLine("Invalid command.");
+        verify(console).printLine(INVALID_COMMAND_OUTPUT);
     }
 }

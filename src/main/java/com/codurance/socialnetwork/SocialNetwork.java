@@ -1,15 +1,12 @@
 package com.codurance.socialnetwork;
 
-import com.codurance.socialnetwork.domain.command.DisplayTimeLineCommand;
-import com.codurance.socialnetwork.domain.command.FollowUserCommand;
-import com.codurance.socialnetwork.domain.command.PostCommand;
+import com.codurance.socialnetwork.domain.command.Command;
+import com.codurance.socialnetwork.domain.command.CommandFactory;
+import com.codurance.socialnetwork.domain.command.InvalidCommandException;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
-
-import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 
 public class SocialNetwork {
     private final Console console;
@@ -34,19 +31,13 @@ public class SocialNetwork {
     }
 
     private void executeCommand(String inputCommand) {
-        if(Pattern.matches("^[A-z]+ -> [\\w\\s]+", inputCommand)) {
-            PostCommand postCommand = new PostCommand(postRepository, "I love the weather today", "Alice", LocalDateTime.of(2018, 1, 1, 0, 0));
-            postCommand.execute();
-        }
+        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
 
-        if (Pattern.matches("^[A-z]+", inputCommand)) {
-            DisplayTimeLineCommand displayTimeLineCommand = new DisplayTimeLineCommand(console);
-            displayTimeLineCommand.execute();
-        }
-
-        if (Pattern.matches("^[A-z]+ follows [A-z]+", inputCommand)) {
-            FollowUserCommand followUserCommand = new FollowUserCommand(userRepository, "Charlie", "Alice");
-            followUserCommand.execute();
+        try {
+            Command command = commandFactory.create(inputCommand);
+            command.execute();
+        } catch (InvalidCommandException e) {
+            console.printLine("Invalid command.");
         }
     }
 }

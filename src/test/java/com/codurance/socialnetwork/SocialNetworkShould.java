@@ -54,6 +54,9 @@ public class SocialNetworkShould {
                 .willReturn(ALICE_POST_COMMAND)
                 .willReturn(EXIT_COMMAND);
 
+        given(clock.now())
+            .willReturn(ALICE_POST_DATE);
+
         socialNetwork.run();
 
         verify(postRepository).save(ALICE_POST);
@@ -85,5 +88,17 @@ public class SocialNetworkShould {
         socialNetwork.run();
 
         verify(userRepository).addFollower(CHARLIE_USERNAME, ALICE_USERNAME);
+    }
+
+    @Test
+    public void
+    print_invalid_command_when_the_command_doesnt_exist() {
+        given(console.readLine())
+                .willReturn("asdf asdf asdf asfd asf")
+                .willReturn(EXIT_COMMAND);
+
+        socialNetwork.run();
+
+        verify(console).printLine("Invalid command.");
     }
 }

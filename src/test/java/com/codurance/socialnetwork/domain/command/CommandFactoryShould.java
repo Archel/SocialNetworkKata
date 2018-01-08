@@ -21,7 +21,7 @@ public class CommandFactoryShould {
     public static final String DISPLAY_TIMELINE_COMMAND = "Alice";
     public static final String FOLLOW_USER_COMMAND = "Charlie follows Alice";
     public static final String AN_INVALID_COMMAND = "zxcvxzcv zvxcczxv xzcvzxc v adfsdf";
-    
+
     @Mock
     private Clock clock;
 

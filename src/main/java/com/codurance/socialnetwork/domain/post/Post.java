@@ -1,6 +1,5 @@
 package com.codurance.socialnetwork.domain.post;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
@@ -16,18 +15,24 @@ public class Post {
         this.creationDate = creationDate;
     }
 
+    public String getMessageAt(LocalDateTime now) {
+        return  message + " (" + ago(now)+ ")";
+    }
+
     public String getMessageWithUserAt(LocalDateTime now) {
-        return author + " - " + message + " (" + ago(now)+ ")";
+        return author + " - "+ getMessageAt(now);
     }
 
     private String ago(LocalDateTime now) {
         long timediff = now.atZone(ZoneOffset.UTC).toInstant().toEpochMilli() - creationDate.atZone(ZoneOffset.UTC).toInstant().toEpochMilli();
 
-        if (timediff > (1000 * 60)) {
-            return (timediff / 1000) / 60 + " minutes ago";
+        if (timediff >= (1000 * 60)) {
+            long minutes = (timediff / 1000) / 60;
+            return minutes + " minute"+ (minutes > 1 ? "s" : "") + " ago";
         }
 
-        return (timediff / 1000) +" seconds ago";
+        long seconds = (timediff / 1000);
+        return (timediff / 1000) +" second"+ (seconds > 1 ? "s" : "") + " ago";
     }
 
     @Override
@@ -45,4 +50,11 @@ public class Post {
         return Objects.hash(message, author, creationDate);
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
 }

@@ -22,15 +22,15 @@ public class CommandFactory {
 
     public Command create(String input) throws InvalidCommandException {
         if (Pattern.matches("^[A-z]+", input)) {
-            return new DisplayTimeLineCommand(console, postRepository, input);
+            return new DisplayTimeLineCommand(console, postRepository, input, clock);
         }
 
         if (Pattern.matches("^[A-z]+ follows [A-z]+", input)) {
             String[] commandDetails = input.split(" follows ");
-            return new FollowUserCommand(userRepository, commandDetails[0], commandDetails[1]);
+            return new FollowUserCommand(userRepository, commandDetails[1], commandDetails[0]);
         }
 
-        if(Pattern.matches("^[A-z]+ -> [\\w\\s!?']+", input)) {
+        if(Pattern.matches("^[A-z]+ -> [\\w\\s!?'.]+", input)) {
             String[] commandDetails = input.split(" -> ");
             return new PostCommand(postRepository, commandDetails[1], commandDetails[0], clock.now());
         }

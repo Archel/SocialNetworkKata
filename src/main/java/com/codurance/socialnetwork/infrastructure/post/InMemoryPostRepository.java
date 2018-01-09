@@ -3,21 +3,28 @@ package com.codurance.socialnetwork.infrastructure.post;
 import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.Posts;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryPostRepository implements Posts {
+    List<Post> posts = new ArrayList<>();
+
     @Override
     public void save(Post post) {
-        throw new UnsupportedOperationException();
+        posts.add(post);
+        posts.sort(Comparator.comparing(Post::getCreationDate));
+        Collections.reverse(posts);
     }
 
     @Override
     public List<Post> findByUserName(String userName) {
-        throw new UnsupportedOperationException();
+        return posts.stream().filter(post -> userName.equals(post.getAuthor())).collect(Collectors.toList());
     }
 
     @Override
     public List<Post> getPostsByUsers(List<String> userNames) {
-        throw new UnsupportedOperationException();
+        return posts
+                .stream()
+                .filter(post -> userNames.contains(post.getAuthor())).collect(Collectors.toList());
     }
 }

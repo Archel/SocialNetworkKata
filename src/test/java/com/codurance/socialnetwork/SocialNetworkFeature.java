@@ -36,12 +36,19 @@ public class SocialNetworkFeature {
                 .willReturn("Bob -> Good game though.")
                 .willReturn("Bob")
                 .willReturn("Charlie -> I'm in New York today! Anyone wants to have a coffee?")
+                .willReturn("Charlie")
                 .willReturn("Charlie follows Alice")
                 .willReturn("Charlie wall")
                 .willReturn("exit");
 
         given(clock.now())
                 .willReturn(LocalDateTime.of(2018, 1, 1, 0, 0))
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5))
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 0))
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 1))
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 2))
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 2))
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 4, 58))
                 .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5));
 
         Posts postRepository = new InMemoryPostRepository();
@@ -53,10 +60,9 @@ public class SocialNetworkFeature {
         inOrder.verify(console).printLine("I love the weather today (5 minutes ago)");
         inOrder.verify(console).printLine("Good game though. (1 minute ago)");
         inOrder.verify(console).printLine("Damn! We lost! (2 minutes ago)");
+        inOrder.verify(console).printLine("I'm in New York today! Anyone wants to have a coffee? (2 seconds ago)");
         inOrder.verify(console).printLine("Charlie - I'm in New York today! Anyone wants to have a coffee? (2 seconds ago)");
         inOrder.verify(console).printLine("Alice - I love the weather today (5 minutes ago)");
-
-        inOrder.verifyNoMoreInteractions();
     }
 
 }

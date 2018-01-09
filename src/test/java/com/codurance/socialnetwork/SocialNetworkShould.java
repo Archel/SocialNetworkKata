@@ -35,7 +35,11 @@ public class SocialNetworkShould {
     private static final Post ALICE_POST = new Post(ALICE_MESSAGE, ALICE_USERNAME, ALICE_POST_DATE);
     private static final String FOLLOW_COMMAND = "Alice follows Charlie";
     private static final String INVALID_COMMAND = "asdf asdf asdf asfd asf";
-    public static final String INVALID_COMMAND_OUTPUT = "Invalid command.";
+    private static final String INVALID_COMMAND_OUTPUT = "Invalid command.";
+    private static final String CHARLIE_POST_COMMAND = "Charlie -> I'm in New York today! Anyone wants to have a coffee?";
+    private static final String ALICE_WALL_COMMAND = "Alice wall";
+    private static final LocalDateTime NOW = LocalDateTime.of(2018, 1, 1, 0, 5, 0);
+    private static final Post CHARLIE_POST = new Post("I'm in New York today! Anyone wants to have a coffee?", "Charlie", LocalDateTime.of(2018, 1, 1, 0, 4, 45));
 
     @Mock
     private Console console;
@@ -124,19 +128,19 @@ public class SocialNetworkShould {
     list_a_user_wall_when_receive_the_show_wall_command() {
         given(console.readLine())
                 .willReturn(ALICE_POST_COMMAND)
-                .willReturn("Charlie -> I'm in New York today! Anyone wants to have a coffee?")
+                .willReturn(CHARLIE_POST_COMMAND)
                 .willReturn(FOLLOW_COMMAND)
-                .willReturn("Alice wall")
+                .willReturn(ALICE_WALL_COMMAND)
                 .willReturn(EXIT_COMMAND);
 
         given(clock.now())
-                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5, 0));
+                .willReturn(NOW);
 
         given(userRepository.getFollowers(ALICE_USERNAME))
-                .willReturn(new ArrayList<>(Collections.singletonList("Charlie")));
+                .willReturn(new ArrayList<>(Collections.singletonList(CHARLIE_USERNAME)));
 
-        given(postRepository.getPostsByUsers(new ArrayList<>(asList("Charlie", ALICE_USERNAME))))
-                .willReturn(asList(new Post("I'm in New York today! Anyone wants to have a coffee?", "Charlie", LocalDateTime.of(2018, 1, 1, 0, 4, 45)), ALICE_POST));
+        given(postRepository.getPostsByUsers(new ArrayList<>(asList(CHARLIE_USERNAME, ALICE_USERNAME))))
+                .willReturn(asList(CHARLIE_POST, ALICE_POST));
 
         socialNetwork.run();
 

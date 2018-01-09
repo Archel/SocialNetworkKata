@@ -8,11 +8,17 @@ import com.codurance.socialnetwork.infrastructure.Console;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -27,7 +33,7 @@ public class SocialNetworkShould {
     private static final String ALICE_POST_PRINTED = "I love the weather today (5 minutes ago)";
     private static final String ALICE_POST_COMMAND = "Alice -> I love the weather today";
     private static final Post ALICE_POST = new Post(ALICE_MESSAGE, ALICE_USERNAME, ALICE_POST_DATE);
-    private static final String FOLLOW_COMMAND = "Charlie follows Alice";
+    private static final String FOLLOW_COMMAND = "Alice follows Charlie";
     private static final String INVALID_COMMAND = "asdf asdf asdf asfd asf";
     public static final String INVALID_COMMAND_OUTPUT = "Invalid command.";
 
@@ -74,10 +80,18 @@ public class SocialNetworkShould {
                 .willReturn(EXIT_COMMAND);
 
         given(clock.now())
-                .willReturn(ALICE_POST_DATE);
+                .willReturn(ALICE_POST_DATE)
+                .willReturn(ALICE_POST_DATE.plusMinutes(5));
+
+        List<Post> userList = new ArrayList<>();
+        userList.add(ALICE_POST);
+
+        given(postRepository.findByUserName(ALICE_USERNAME))
+                .willReturn(userList);
 
         socialNetwork.run();
 
+        verify(postRepository).findByUserName(ALICE_USERNAME);
         verify(console).printLine(ALICE_POST_PRINTED);
     }
 
@@ -90,7 +104,7 @@ public class SocialNetworkShould {
 
         socialNetwork.run();
 
-        verify(userRepository).addFollower(CHARLIE_USERNAME, ALICE_USERNAME);
+        verify(userRepository).addFollower(ALICE_USERNAME, CHARLIE_USERNAME);
     }
 
     @Test
@@ -103,5 +117,34 @@ public class SocialNetworkShould {
         socialNetwork.run();
 
         verify(console).printLine(INVALID_COMMAND_OUTPUT);
+    }
+    
+    @Test
+    public void
+    list_a_user_wall_when_receive_the_show_wall_command() {
+        given(console.readLine())
+                .willReturn(ALICE_POST_COMMAND)
+                .willReturn("Charlie -> I'm in New York today! Anyone wants to have a coffee?")
+                .willReturn(FOLLOW_COMMAND)
+                .willReturn("Alice wall")
+                .willReturn(EXIT_COMMAND);
+
+        given(clock.now())
+                .willReturn(LocalDateTime.of(2018, 1, 1, 0, 5, 0));
+
+        given(userRepository.getFollowers(ALICE_USERNAME))
+                .willReturn(new ArrayList<>(Collections.singletonList("Charlie")));
+
+        given(postRepository.getPostsByUsers(new ArrayList<>(asList("Charlie", ALICE_USERNAME))))
+                .willReturn(asList(new Post("I'm in New York today! Anyone wants to have a coffee?", "Charlie", LocalDateTime.of(2018, 1, 1, 0, 4, 45)), ALICE_POST));
+
+        socialNetwork.run();
+
+        verify(userRepository).getFollowers(ALICE_USERNAME);
+        verify(postRepository).getPostsByUsers(new ArrayList<>(asList("Charlie", ALICE_USERNAME)));
+
+        InOrder inOrder = Mockito.inOrder(console);
+        inOrder.verify(console).printLine("Charlie - I'm in New York today! Anyone wants to have a coffee? (15 seconds ago)");
+        inOrder.verify(console).printLine("Alice - I love the weather today (5 minutes ago)");
     }
 }

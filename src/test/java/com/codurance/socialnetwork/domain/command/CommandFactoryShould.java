@@ -21,6 +21,7 @@ public class CommandFactoryShould {
     private static final String DISPLAY_TIMELINE_COMMAND = "Alice";
     private static final String FOLLOW_USER_COMMAND = "Charlie follows Alice";
     private static final String AN_INVALID_COMMAND = "zxcvxzcv zvxcczxv xzcvzxc v adfsdf";
+    private static final String DISPLAY_WALL_COMMAND = "Alice wall";
 
     @Mock
     private Clock clock;
@@ -63,6 +64,14 @@ public class CommandFactoryShould {
         Command followUserCommand = commandFactory.create(FOLLOW_USER_COMMAND);
 
         assertThat(followUserCommand, instanceOf(FollowUserCommand.class));
+    }
+
+    @Test
+    public void
+    returns_a_display_wall_when_receives_the_display_wall_command_represented_as_string() throws InvalidCommandException {
+        Command displayWallCommand = commandFactory.create(DISPLAY_WALL_COMMAND);
+
+        assertThat(displayWallCommand, instanceOf(DisplayWallCommand.class));
     }
 
     @Test(expected = InvalidCommandException.class)

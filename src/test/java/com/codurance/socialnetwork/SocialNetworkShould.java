@@ -108,7 +108,7 @@ public class SocialNetworkShould {
 
         socialNetwork.run();
 
-        verify(userRepository).addFollower(ALICE_USERNAME, CHARLIE_USERNAME);
+        verify(userRepository).addFollower(CHARLIE_USERNAME, ALICE_USERNAME);
     }
 
     @Test

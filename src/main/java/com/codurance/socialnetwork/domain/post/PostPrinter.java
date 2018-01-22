@@ -15,4 +15,8 @@ public class PostPrinter {
     public void printForTimeLine(Post post) {
         console.printLine(post.getMessage() +" ("+ clock.ago(post.getCreationDate()) + ")");
     }
+
+    public void printForWall(Post post) {
+        console.printLine(post.getAuthor() + " - " +post.getMessage() +" ("+ clock.ago(post.getCreationDate()) + ")");
+    }
 }

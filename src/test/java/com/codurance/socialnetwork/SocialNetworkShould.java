@@ -41,6 +41,8 @@ public class SocialNetworkShould {
     private static final String ALICE_WALL_COMMAND = "Alice wall";
     private static final LocalDateTime NOW = LocalDateTime.of(2018, 1, 1, 0, 5, 0);
     private static final Post CHARLIE_POST = new Post("I'm in New York today! Anyone wants to have a coffee?", "Charlie", LocalDateTime.of(2018, 1, 1, 0, 4, 45));
+    private static final String CHARLIE_POST_IN_ALICE_WALL = "Charlie - I'm in New York today! Anyone wants to have a coffee? (15 seconds ago)";
+    private static final String ALICE_POST_IN_ALICE_WALL = "Alice - I love the weather today (5 minutes ago)";
 
     @Mock
     private Console console;
@@ -147,10 +149,10 @@ public class SocialNetworkShould {
         socialNetwork.run();
 
         verify(userRepository).getFollowers(ALICE_USERNAME);
-        verify(postRepository).getPostsByUsers(new ArrayList<>(asList("Charlie", ALICE_USERNAME)));
+        verify(postRepository).getPostsByUsers(new ArrayList<>(asList(CHARLIE_USERNAME, ALICE_USERNAME)));
 
         InOrder inOrder = Mockito.inOrder(console);
-        inOrder.verify(console).printLine("Charlie - I'm in New York today! Anyone wants to have a coffee? (15 seconds ago)");
-        inOrder.verify(console).printLine("Alice - I love the weather today (5 minutes ago)");
+        inOrder.verify(console).printLine(CHARLIE_POST_IN_ALICE_WALL);
+        inOrder.verify(console).printLine(ALICE_POST_IN_ALICE_WALL);
     }
 }

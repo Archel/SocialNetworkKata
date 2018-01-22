@@ -3,9 +3,6 @@ package com.codurance.socialnetwork;
 import com.codurance.socialnetwork.domain.command.Command;
 import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.command.InvalidCommandException;
-import com.codurance.socialnetwork.domain.post.Posts;
-import com.codurance.socialnetwork.domain.user.Users;
-import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
 
 public class SocialNetwork {

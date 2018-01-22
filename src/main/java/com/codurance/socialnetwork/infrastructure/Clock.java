@@ -6,4 +6,8 @@ public class Clock {
     public LocalDateTime now() {
         throw new UnsupportedOperationException();
     }
+
+    public String ago(LocalDateTime creationDate) {
+        throw new UnsupportedOperationException();
+    }
 }

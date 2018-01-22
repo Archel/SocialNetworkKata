@@ -35,6 +35,10 @@ public class Post {
         return (timediff / 1000) +" second"+ (seconds > 1 ? "s" : "") + " ago";
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,6 @@
 package com.codurance.socialnetwork;
 
+import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
@@ -57,7 +58,8 @@ public class SocialNetworkShould {
 
     @Before
     public void setUp() {
-        socialNetwork = new SocialNetwork(console, clock, postRepository, userRepository);
+        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+        socialNetwork = new SocialNetwork(console, commandFactory);
     }
 
     @Test

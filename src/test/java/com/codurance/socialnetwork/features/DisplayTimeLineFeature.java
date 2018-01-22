@@ -1,6 +1,7 @@
 package com.codurance.socialnetwork.features;
 
 import com.codurance.socialnetwork.SocialNetwork;
+import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
@@ -28,8 +29,8 @@ public class DisplayTimeLineFeature {
     private static final String BOB_SECOND_POST_COMMAND = "Bob -> Good game though.";
     private static final String DISPLAY_BOB_TIMELINE_COMMAND = "Bob";
     private static final String EXIT_COMMAND = "exit";
-    public static final String BOB_TIMELINE_POST_TWO = "Good game though. (1 minute ago)";
-    public static final String BOB_TIMELINE_POST_ONE = "Damn! We lost! (2 minutes ago)";
+    private static final String BOB_TIMELINE_POST_TWO = "Good game though. (1 minute ago)";
+    private static final String BOB_TIMELINE_POST_ONE = "Damn! We lost! (2 minutes ago)";
 
     @Mock
     private Console console;
@@ -43,7 +44,8 @@ public class DisplayTimeLineFeature {
     public void setUp() {
         Posts postRepository = new InMemoryPostRepository();
         Users userRepository = new InMemoryUsersRepository();
-        socialNetwork = new SocialNetwork(console, clock, postRepository, userRepository);
+        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+        socialNetwork = new SocialNetwork(console, commandFactory);
     }
 
     @Test

@@ -10,15 +10,11 @@ import com.codurance.socialnetwork.infrastructure.Console;
 
 public class SocialNetwork {
     private final Console console;
-    private final Clock clock;
-    private Posts postRepository;
-    private Users userRepository;
+    private final CommandFactory commandFactory;
 
-    public SocialNetwork(Console console, Clock clock, Posts postRepository, Users userRepository) {
+    public SocialNetwork(Console console, CommandFactory commandFactory) {
         this.console = console;
-        this.clock = clock;
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
+        this.commandFactory = commandFactory;
     }
 
     public void run() {
@@ -31,8 +27,6 @@ public class SocialNetwork {
     }
 
     private void executeCommand(String inputCommand) {
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-
         try {
             Command command = commandFactory.create(inputCommand);
             command.execute();

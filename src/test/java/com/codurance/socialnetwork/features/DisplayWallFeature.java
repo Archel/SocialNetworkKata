@@ -1,6 +1,7 @@
 package com.codurance.socialnetwork.features;
 
 import com.codurance.socialnetwork.SocialNetwork;
+import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
@@ -43,7 +44,8 @@ public class DisplayWallFeature {
     public void setUp() {
         Posts postRepository = new InMemoryPostRepository();
         Users userRepository = new InMemoryUsersRepository();
-        socialNetwork = new SocialNetwork(console, clock, postRepository, userRepository);
+        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+        socialNetwork = new SocialNetwork(console, commandFactory);
     }
 
     @Test

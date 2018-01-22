@@ -4,8 +4,6 @@ import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.PostPrinter;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
-import com.codurance.socialnetwork.infrastructure.Clock;
-import com.codurance.socialnetwork.infrastructure.Console;
 
 import java.util.List;
 

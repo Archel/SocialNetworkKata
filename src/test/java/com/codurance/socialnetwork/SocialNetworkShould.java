@@ -2,6 +2,7 @@ package com.codurance.socialnetwork;
 
 import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.post.Post;
+import com.codurance.socialnetwork.domain.post.PostPrinter;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
@@ -31,7 +32,6 @@ public class SocialNetworkShould {
     private static final LocalDateTime ALICE_POST_DATE = LocalDateTime.of(2018, 1, 1, 0, 0);
     private static final String EXIT_COMMAND = "exit";
     private static final String CHARLIE_USERNAME = "Charlie";
-    private static final String ALICE_POST_PRINTED = "I love the weather today (5 minutes ago)";
     private static final String ALICE_POST_COMMAND = "Alice -> I love the weather today";
     private static final Post ALICE_POST = new Post(ALICE_MESSAGE, ALICE_USERNAME, ALICE_POST_DATE);
     private static final String FOLLOW_COMMAND = "Alice follows Charlie";
@@ -41,8 +41,6 @@ public class SocialNetworkShould {
     private static final String ALICE_WALL_COMMAND = "Alice wall";
     private static final LocalDateTime NOW = LocalDateTime.of(2018, 1, 1, 0, 5, 0);
     private static final Post CHARLIE_POST = new Post("I'm in New York today! Anyone wants to have a coffee?", "Charlie", LocalDateTime.of(2018, 1, 1, 0, 4, 45));
-    private static final String CHARLIE_POST_IN_ALICE_WALL = "Charlie - I'm in New York today! Anyone wants to have a coffee? (15 seconds ago)";
-    private static final String ALICE_POST_IN_ALICE_WALL = "Alice - I love the weather today (5 minutes ago)";
 
     @Mock
     private Console console;
@@ -56,11 +54,14 @@ public class SocialNetworkShould {
     @Mock
     private Users userRepository;
 
+    @Mock
+    private PostPrinter postPrinter;
+
     private SocialNetwork socialNetwork;
 
     @Before
     public void setUp() {
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+        CommandFactory commandFactory = new CommandFactory(clock, postPrinter, postRepository, userRepository);
         socialNetwork = new SocialNetwork(console, commandFactory);
     }
 
@@ -100,7 +101,7 @@ public class SocialNetworkShould {
         socialNetwork.run();
 
         verify(postRepository).findByUserName(ALICE_USERNAME);
-        verify(console).printLine(ALICE_POST_PRINTED);
+        verify(postPrinter).printForTimeLine(ALICE_POST);
     }
 
     @Test
@@ -151,8 +152,8 @@ public class SocialNetworkShould {
         verify(userRepository).getFollowers(ALICE_USERNAME);
         verify(postRepository).getPostsByUsers(new ArrayList<>(asList(CHARLIE_USERNAME, ALICE_USERNAME)));
 
-        InOrder inOrder = Mockito.inOrder(console);
-        inOrder.verify(console).printLine(CHARLIE_POST_IN_ALICE_WALL);
-        inOrder.verify(console).printLine(ALICE_POST_IN_ALICE_WALL);
+        InOrder inOrder = Mockito.inOrder(postPrinter);
+        inOrder.verify(postPrinter).printForWall(CHARLIE_POST);
+        inOrder.verify(postPrinter).printForWall(ALICE_POST);
     }
 }

@@ -2,6 +2,7 @@ package com.codurance.socialnetwork.features;
 
 import com.codurance.socialnetwork.SocialNetwork;
 import com.codurance.socialnetwork.domain.command.CommandFactory;
+import com.codurance.socialnetwork.domain.post.PostPrinter;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
@@ -19,6 +20,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.time.LocalDateTime;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DisplayWallFeature {
@@ -38,14 +40,21 @@ public class DisplayWallFeature {
 
     @Mock
     private Clock clock;
+
+
     private SocialNetwork socialNetwork;
 
     @Before
     public void setUp() {
+        CommandFactory commandFactory = initializeCommandFactory();
+        socialNetwork = new SocialNetwork(console, commandFactory);
+    }
+
+    private CommandFactory initializeCommandFactory() {
         Posts postRepository = new InMemoryPostRepository();
         Users userRepository = new InMemoryUsersRepository();
-        CommandFactory commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
-        socialNetwork = new SocialNetwork(console, commandFactory);
+        PostPrinter postPrinter = new PostPrinter(console, clock);
+        return new CommandFactory(clock, postPrinter, postRepository, userRepository);
     }
 
     @Test
@@ -62,6 +71,8 @@ public class DisplayWallFeature {
                 .willReturn(ALICE_POST_DATE)
                 .willReturn(CHARLIE_POST_DATE)
                 .willReturn(NOW);
+
+        given(clock.ago(any(LocalDateTime.class))).willCallRealMethod();
 
         socialNetwork.run();
 

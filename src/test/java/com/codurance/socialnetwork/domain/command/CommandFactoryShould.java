@@ -1,6 +1,7 @@
 package com.codurance.socialnetwork.domain.command;
 
 
+import com.codurance.socialnetwork.domain.post.PostPrinter;
 import com.codurance.socialnetwork.domain.post.Posts;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
@@ -27,19 +28,19 @@ public class CommandFactoryShould {
     private Clock clock;
 
     @Mock
-    private Console console;
-
-    @Mock
     private Posts postRepository;
 
     @Mock
     private Users userRepository;
 
+    @Mock
+    private PostPrinter postPrinter;
+
     private CommandFactory commandFactory;
 
     @Before
     public void setUp() {
-        commandFactory = new CommandFactory(clock, console, postRepository, userRepository);
+        commandFactory = new CommandFactory(clock, postPrinter, postRepository, userRepository);
     }
 
     @Test

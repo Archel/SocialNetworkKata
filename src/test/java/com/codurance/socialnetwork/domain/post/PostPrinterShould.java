@@ -22,7 +22,7 @@ public class PostPrinterShould {
 
     @Mock
     private Clock clock;
-    public static final Post ALICE_POST = new Post("I love the weather today", "Alice", ALICE_POST_DATE);
+    private static final Post ALICE_POST = new Post("I love the weather today", "Alice", ALICE_POST_DATE);
     private PostPrinter postPrinter;
 
     @Before

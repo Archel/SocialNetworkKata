@@ -2,6 +2,7 @@ package com.codurance.socialnetwork.domain.post;
 
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -21,15 +22,19 @@ public class PostPrinterShould {
 
     @Mock
     private Clock clock;
+    public static final Post ALICE_POST = new Post("I love the weather today", "Alice", ALICE_POST_DATE);
+    private PostPrinter postPrinter;
+
+    @Before
+    public void setUp() {
+        postPrinter = new PostPrinter(console, clock);
+        given(clock.ago(ALICE_POST.getCreationDate())).willReturn("5 minutes ago");
+    }
 
     @Test
     public void
     print_a_post_in_timeline_format() {
-        Post post = new Post("I love the weather today", "Alice", ALICE_POST_DATE);
-        PostPrinter postPrinter = new PostPrinter(console, clock);
-        given(clock.ago(post.getCreationDate())).willReturn("5 minutes ago");
-
-        postPrinter.printForTimeLine(post);
+        postPrinter.printForTimeLine(ALICE_POST);
 
         verify(console).printLine("I love the weather today (5 minutes ago)");
     }
@@ -37,11 +42,7 @@ public class PostPrinterShould {
     @Test
     public void
     print_a_post_in_wall_format() {
-        Post post = new Post("I love the weather today", "Alice", ALICE_POST_DATE);
-        PostPrinter postPrinter = new PostPrinter(console, clock);
-        given(clock.ago(post.getCreationDate())).willReturn("5 minutes ago");
-
-        postPrinter.printForWall(post);
+        postPrinter.printForWall(ALICE_POST);
 
         verify(console).printLine("Alice - I love the weather today (5 minutes ago)");
     }

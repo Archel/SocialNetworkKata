@@ -2,6 +2,7 @@ package com.codurance.socialnetwork.domain.command;
 
 import com.codurance.socialnetwork.domain.post.PostPrinter;
 import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.user.User;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
 
@@ -22,7 +23,8 @@ public class CommandFactory {
 
     public Command create(String input) throws InvalidCommandException {
         if (Pattern.matches("^[A-z]+", input)) {
-            return new DisplayTimeLineCommand(postPrinter, postRepository, input);
+            User user = userRepository.getOrCreateBy(input);
+            return new DisplayTimeLineCommand(postPrinter, postRepository, user);
         }
 
         if (Pattern.matches("^[A-z]+ follows [A-z]+", input)) {

@@ -3,7 +3,6 @@ package com.codurance.socialnetwork.domain.post;
 import com.codurance.socialnetwork.domain.user.User;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Objects;
 
 public class Post {
@@ -33,7 +32,6 @@ public class Post {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(message, creationDate, author);
     }
 

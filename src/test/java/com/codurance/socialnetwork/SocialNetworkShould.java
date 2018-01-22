@@ -4,6 +4,7 @@ import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.PostPrinter;
 import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.user.User;
 import com.codurance.socialnetwork.domain.user.Users;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
@@ -91,6 +92,9 @@ public class SocialNetworkShould {
         given(clock.now())
                 .willReturn(ALICE_POST_DATE)
                 .willReturn(ALICE_POST_DATE.plusMinutes(5));
+
+        given(userRepository.getOrCreateBy(ALICE_USERNAME))
+                .willReturn(new User(ALICE_USERNAME));
 
         List<Post> userList = new ArrayList<>();
         userList.add(ALICE_POST);

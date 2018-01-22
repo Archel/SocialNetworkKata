@@ -1,17 +1,19 @@
 package com.codurance.socialnetwork.domain.post;
 
+import com.codurance.socialnetwork.domain.user.User;
+
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
 public class Post {
     private final String message;
-    private final String author;
     private final LocalDateTime creationDate;
+    private final User author;
 
     public Post(String message, String author, LocalDateTime creationDate) {
         this.message = message;
-        this.author = author;
+        this.author = new User(author);
         this.creationDate = creationDate;
     }
 
@@ -25,17 +27,18 @@ public class Post {
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
         return Objects.equals(message, post.message) &&
-                Objects.equals(author, post.author) &&
-                Objects.equals(creationDate, post.creationDate);
+                Objects.equals(creationDate, post.creationDate) &&
+                Objects.equals(author, post.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(message, author, creationDate);
+
+        return Objects.hash(message, creationDate, author);
     }
 
     public String getAuthor() {
-        return author;
+        return author.getUserName();
     }
 
     public LocalDateTime getCreationDate() {

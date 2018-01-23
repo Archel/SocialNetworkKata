@@ -1,22 +1,23 @@
 package com.codurance.socialnetwork.domain.command;
 
-import com.codurance.socialnetwork.domain.post.PostPrinter;
-import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.command.exception.InvalidCommandException;
+import com.codurance.socialnetwork.infrastructure.ConsolePostPrinter;
+import com.codurance.socialnetwork.domain.post.PostRepository;
 import com.codurance.socialnetwork.domain.user.User;
-import com.codurance.socialnetwork.domain.user.Users;
+import com.codurance.socialnetwork.domain.user.UserRepository;
 import com.codurance.socialnetwork.infrastructure.Clock;
 
 import java.util.regex.Pattern;
 
 public class CommandFactory {
     private final Clock clock;
-    private final PostPrinter postPrinter;
-    private final Posts postRepository;
-    private final Users userRepository;
+    private final ConsolePostPrinter consolePostPrinter;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public CommandFactory(Clock clock, PostPrinter postPrinter, Posts postRepository, Users userRepository) {
+    public CommandFactory(Clock clock, ConsolePostPrinter consolePostPrinter, PostRepository postRepository, UserRepository userRepository) {
         this.clock = clock;
-        this.postPrinter = postPrinter;
+        this.consolePostPrinter = consolePostPrinter;
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
@@ -24,7 +25,7 @@ public class CommandFactory {
     public Command create(String input) throws InvalidCommandException {
         if (Pattern.matches("^[A-z]+", input)) {
             User user = userRepository.getOrCreateBy(input);
-            return new DisplayTimeLineCommand(postPrinter, postRepository, user);
+            return new DisplayTimeLineCommand(consolePostPrinter, postRepository, user);
         }
 
         if (Pattern.matches("^[A-z]+ follows [A-z]+", input)) {
@@ -34,12 +35,12 @@ public class CommandFactory {
 
         if(Pattern.matches("^[A-z]+ -> [\\w\\s!?'.]+", input)) {
             String[] commandDetails = input.split(" -> ");
-            return new PostCommand(postRepository, commandDetails[1], commandDetails[0], clock.now());
+            return new PostCommand(postRepository, clock, commandDetails[1], commandDetails[0]);
         }
 
         if(Pattern.matches("[A-z]+ wall", input)) {
             String username = input.replace(" wall", "");
-            return new DisplayWallCommand(postPrinter, postRepository, userRepository, username);
+            return new DisplayWallCommand(consolePostPrinter, postRepository, userRepository, username);
         }
 
         throw new InvalidCommandException();

@@ -1,25 +1,25 @@
 package com.codurance.socialnetwork.domain.command;
 
 import com.codurance.socialnetwork.domain.post.Post;
-import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.post.PostRepository;
+import com.codurance.socialnetwork.infrastructure.Clock;
 
-import java.time.LocalDateTime;
+class PostCommand implements Command {
 
-public class PostCommand implements Command {
+    private PostRepository postRepository;
+    private final Clock clock;
+    private final String message;
+    private final String author;
 
-    private Posts postRepository;
-    private final String postMessage;
-    private final String postAuthor;
-    private final LocalDateTime postCreationDate;
 
-    public PostCommand(Posts postRepository, String postMessage, String postAuthor, LocalDateTime postCreationDate) {
+    public PostCommand(PostRepository postRepository, Clock clock, String message, String author) {
         this.postRepository = postRepository;
-        this.postMessage = postMessage;
-        this.postAuthor = postAuthor;
-        this.postCreationDate = postCreationDate;
+        this.clock = clock;
+        this.message = message;
+        this.author = author;
     }
 
     public void execute() {
-        postRepository.save(new Post(postMessage, postAuthor, postCreationDate));
+        postRepository.save(new Post(message, author, clock.now()));
     }
 }

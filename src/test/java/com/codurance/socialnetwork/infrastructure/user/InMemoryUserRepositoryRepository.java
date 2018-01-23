@@ -1,14 +1,14 @@
 package com.codurance.socialnetwork.infrastructure.user;
 
 import com.codurance.socialnetwork.domain.user.User;
-import com.codurance.socialnetwork.domain.user.Users;
+import com.codurance.socialnetwork.domain.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryUsersRepository implements Users {
+public class InMemoryUserRepositoryRepository implements UserRepository {
     private Map<String, List<String>> followers = new HashMap<>();
     private Map<String, User> users = new HashMap<>();
 

@@ -1,12 +1,12 @@
 package com.codurance.socialnetwork.infrastructure.post;
 
 import com.codurance.socialnetwork.domain.post.Post;
-import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.domain.post.PostRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InMemoryPostRepository implements Posts {
+public class InMemoryPostRepository implements PostRepository {
     List<Post> posts = new ArrayList<>();
 
     @Override

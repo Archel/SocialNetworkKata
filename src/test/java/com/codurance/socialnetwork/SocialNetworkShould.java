@@ -2,10 +2,10 @@ package com.codurance.socialnetwork;
 
 import com.codurance.socialnetwork.domain.command.CommandFactory;
 import com.codurance.socialnetwork.domain.post.Post;
-import com.codurance.socialnetwork.domain.post.PostPrinter;
-import com.codurance.socialnetwork.domain.post.Posts;
+import com.codurance.socialnetwork.infrastructure.ConsolePostPrinter;
+import com.codurance.socialnetwork.domain.post.PostRepository;
 import com.codurance.socialnetwork.domain.user.User;
-import com.codurance.socialnetwork.domain.user.Users;
+import com.codurance.socialnetwork.domain.user.UserRepository;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
 import org.junit.Before;
@@ -50,19 +50,19 @@ public class SocialNetworkShould {
     private Clock clock;
 
     @Mock
-    private Posts postRepository;
+    private PostRepository postRepository;
 
     @Mock
-    private Users userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    private PostPrinter postPrinter;
+    private ConsolePostPrinter consolePostPrinter;
 
     private SocialNetwork socialNetwork;
 
     @Before
     public void setUp() {
-        CommandFactory commandFactory = new CommandFactory(clock, postPrinter, postRepository, userRepository);
+        CommandFactory commandFactory = new CommandFactory(clock, consolePostPrinter, postRepository, userRepository);
         socialNetwork = new SocialNetwork(console, commandFactory);
     }
 
@@ -105,7 +105,7 @@ public class SocialNetworkShould {
         socialNetwork.run();
 
         verify(postRepository).findByUserName(ALICE_USERNAME);
-        verify(postPrinter).printForTimeLine(ALICE_POST);
+        verify(consolePostPrinter).printForTimeLine(ALICE_POST);
     }
 
     @Test
@@ -156,8 +156,8 @@ public class SocialNetworkShould {
         verify(userRepository).getFollowers(ALICE_USERNAME);
         verify(postRepository).getPostsByUsers(new ArrayList<>(asList(CHARLIE_USERNAME, ALICE_USERNAME)));
 
-        InOrder inOrder = Mockito.inOrder(postPrinter);
-        inOrder.verify(postPrinter).printForWall(CHARLIE_POST);
-        inOrder.verify(postPrinter).printForWall(ALICE_POST);
+        InOrder inOrder = Mockito.inOrder(consolePostPrinter);
+        inOrder.verify(consolePostPrinter).printForWall(CHARLIE_POST);
+        inOrder.verify(consolePostPrinter).printForWall(ALICE_POST);
     }
 }

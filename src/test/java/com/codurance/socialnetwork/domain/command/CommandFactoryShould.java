@@ -1,11 +1,11 @@
 package com.codurance.socialnetwork.domain.command;
 
 
-import com.codurance.socialnetwork.domain.post.PostPrinter;
-import com.codurance.socialnetwork.domain.post.Posts;
-import com.codurance.socialnetwork.domain.user.Users;
+import com.codurance.socialnetwork.domain.command.exception.InvalidCommandException;
+import com.codurance.socialnetwork.infrastructure.ConsolePostPrinter;
+import com.codurance.socialnetwork.domain.post.PostRepository;
+import com.codurance.socialnetwork.domain.user.UserRepository;
 import com.codurance.socialnetwork.infrastructure.Clock;
-import com.codurance.socialnetwork.infrastructure.Console;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,19 +28,19 @@ public class CommandFactoryShould {
     private Clock clock;
 
     @Mock
-    private Posts postRepository;
+    private PostRepository postRepository;
 
     @Mock
-    private Users userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    private PostPrinter postPrinter;
+    private ConsolePostPrinter consolePostPrinter;
 
     private CommandFactory commandFactory;
 
     @Before
     public void setUp() {
-        commandFactory = new CommandFactory(clock, postPrinter, postRepository, userRepository);
+        commandFactory = new CommandFactory(clock, consolePostPrinter, postRepository, userRepository);
     }
 
     @Test

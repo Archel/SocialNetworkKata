@@ -2,13 +2,13 @@ package com.codurance.socialnetwork.features;
 
 import com.codurance.socialnetwork.SocialNetwork;
 import com.codurance.socialnetwork.domain.command.CommandFactory;
-import com.codurance.socialnetwork.domain.post.PostPrinter;
-import com.codurance.socialnetwork.domain.post.Posts;
-import com.codurance.socialnetwork.domain.user.Users;
+import com.codurance.socialnetwork.infrastructure.ConsolePostPrinter;
+import com.codurance.socialnetwork.domain.post.PostRepository;
+import com.codurance.socialnetwork.domain.user.UserRepository;
 import com.codurance.socialnetwork.infrastructure.Clock;
 import com.codurance.socialnetwork.infrastructure.Console;
 import com.codurance.socialnetwork.infrastructure.post.InMemoryPostRepository;
-import com.codurance.socialnetwork.infrastructure.user.InMemoryUsersRepository;
+import com.codurance.socialnetwork.infrastructure.user.InMemoryUserRepositoryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,10 +49,10 @@ public class DisplayTimeLineFeature {
     }
 
     private CommandFactory initializeCommandFactory() {
-        Posts postRepository = new InMemoryPostRepository();
-        Users userRepository = new InMemoryUsersRepository();
-        PostPrinter postPrinter = new PostPrinter(console, clock);
-        return new CommandFactory(clock, postPrinter, postRepository, userRepository);
+        PostRepository postRepository = new InMemoryPostRepository();
+        UserRepository userRepository = new InMemoryUserRepositoryRepository();
+        ConsolePostPrinter consolePostPrinter = new ConsolePostPrinter(console, clock);
+        return new CommandFactory(clock, consolePostPrinter, postRepository, userRepository);
     }
 
     @Test

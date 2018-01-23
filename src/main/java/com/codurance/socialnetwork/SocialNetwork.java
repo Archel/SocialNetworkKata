@@ -18,13 +18,13 @@ public class SocialNetwork {
     public void run() {
         String inputCommand = this.console.readLine();
 
-        while(isExit(inputCommand)) {
+        while(notExit(inputCommand)) {
             executeCommand(inputCommand);
             inputCommand = this.console.readLine();
         }
     }
 
-    private boolean isExit(String inputCommand) {
+    private boolean notExit(String inputCommand) {
         return !inputCommand.equals(EXIT_COMMAND);
     }
 

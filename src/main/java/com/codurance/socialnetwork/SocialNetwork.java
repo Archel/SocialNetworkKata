@@ -6,7 +6,7 @@ import com.codurance.socialnetwork.domain.command.exception.InvalidCommandExcept
 import com.codurance.socialnetwork.infrastructure.Console;
 
 public class SocialNetwork {
-    public static final String EXIT_COMMAND = "exit";
+    private static final String EXIT_COMMAND = "exit";
     private final Console console;
     private final CommandFactory commandFactory;
 
@@ -16,12 +16,16 @@ public class SocialNetwork {
     }
 
     public void run() {
-        String inputCommand = this.console.readLine();
+        String inputCommand = readLine();
 
         while(notExit(inputCommand)) {
             executeCommand(inputCommand);
-            inputCommand = this.console.readLine();
+            inputCommand = readLine();
         }
+    }
+
+    private String readLine() {
+        return this.console.readLine();
     }
 
     private boolean notExit(String inputCommand) {

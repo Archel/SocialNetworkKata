@@ -15,8 +15,8 @@ stages:
 #  - acceptance-test
 jobs:
   - stage: build
-    script: gradle assemble
+    script: ./gradlew assemble
   - stage: unit-test
-    script: gradle test
+    script: ./gradlew test
 #  - stage: acceptance-test
 #    script: gradle acceptance-test

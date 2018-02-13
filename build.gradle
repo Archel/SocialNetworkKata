@@ -15,3 +15,11 @@ dependencies {
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: '0.3.6'
     testCompile group: 'commons-lang', name: 'commons-lang', version: '2.6'
 }
+
+test {
+    filter {
+        includeTestsMatching "*Should"
+
+        includeTestsMatching "*Feature"
+    }
+}

@@ -24,6 +24,7 @@ jobs:
         JVM_OPTS: -Xmx3200m
         TERM: dumb
       steps:
+        - run: pwd
         - run: ./gradlew dependencies
         - save_cache:
             paths:
@@ -55,7 +56,7 @@ jobs:
 
 workflows:
   version: 2
-  build-and-deploy:
+  build:
     jobs:
       - checkout_code
       - bundle_dependencies:

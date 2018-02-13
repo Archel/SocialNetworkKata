@@ -1,4 +1,4 @@
-# Social Networking Kata [![Build Status](https://travis-ci.org/Archel/SocialNetworkKata.svg?branch=master)](https://travis-ci.org/Archel/SocialNetworkKata)
+# Social Networking Kata
 Implement a console-based social networking application (similar to Twitter) satisfying the scenarios below.
 
 ## Scenarios

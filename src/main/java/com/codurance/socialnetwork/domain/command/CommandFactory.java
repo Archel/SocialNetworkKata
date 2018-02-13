@@ -1,11 +1,12 @@
 package com.codurance.socialnetwork.domain.command;
 
 import com.codurance.socialnetwork.domain.command.exception.InvalidCommandException;
-import com.codurance.socialnetwork.infrastructure.ConsolePostPrinter;
+import com.codurance.socialnetwork.domain.post.Post;
 import com.codurance.socialnetwork.domain.post.PostRepository;
 import com.codurance.socialnetwork.domain.user.User;
 import com.codurance.socialnetwork.domain.user.UserRepository;
 import com.codurance.socialnetwork.infrastructure.Clock;
+import com.codurance.socialnetwork.infrastructure.ConsolePostPrinter;
 
 import java.util.regex.Pattern;
 
@@ -30,12 +31,18 @@ public class CommandFactory {
 
         if (Pattern.matches("^[A-z]+ follows [A-z]+", input)) {
             String[] commandDetails = input.split(" follows ");
-            return new FollowUserCommand(userRepository, commandDetails[1], commandDetails[0]);
+            String follower = commandDetails[1];
+            String followed = commandDetails[0];
+            return new FollowUserCommand(userRepository, follower, followed);
         }
 
         if(Pattern.matches("^[A-z]+ -> [\\w\\s!?'.]+", input)) {
             String[] commandDetails = input.split(" -> ");
-            return new PostCommand(postRepository, clock, commandDetails[1], commandDetails[0]);
+            String message = commandDetails[1];
+            String author = commandDetails[0];
+            Post post = new Post(message, author, clock.now());
+
+            return new PostCommand(postRepository, post);
         }
 
         if(Pattern.matches("[A-z]+ wall", input)) {

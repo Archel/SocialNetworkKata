@@ -122,7 +122,7 @@ public class SocialNetworkShould {
 
     @Test
     public void
-    print_invalid_command_when_the_command_doesnt_exist() {
+    print_invalid_command_when_the_command_does_not_exist() {
         given(console.readLine())
                 .willReturn(INVALID_COMMAND)
                 .willReturn(EXIT_COMMAND);

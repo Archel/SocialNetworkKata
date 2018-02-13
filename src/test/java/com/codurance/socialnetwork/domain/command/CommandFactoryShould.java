@@ -77,7 +77,7 @@ public class CommandFactoryShould {
 
     @Test(expected = InvalidCommandException.class)
     public void
-    throws_an_exception_if_the_command_represented_as_string_is_not_correct() throws InvalidCommandException {
+    fail_if_the_command_represented_as_string_is_not_correct() throws InvalidCommandException {
         commandFactory.create(AN_INVALID_COMMAND);
     }
 }

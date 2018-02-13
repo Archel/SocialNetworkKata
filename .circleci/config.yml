@@ -24,7 +24,7 @@ jobs:
         JVM_OPTS: -Xmx3200m
         TERM: dumb
       steps:
-        - run: pwd
+        - run: pwd && ls -lisah
         - run: ./gradlew dependencies
         - save_cache:
             paths:

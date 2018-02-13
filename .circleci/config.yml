@@ -58,6 +58,8 @@ jobs:
         JVM_OPTS: -Xmx3200m
         TERM: dumb
       steps:
+        - attach_workspace:
+            at: ~/social-network
         - run: ./gradlew test --tests \*Feature
 
   #deploy:

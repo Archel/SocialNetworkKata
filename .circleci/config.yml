@@ -15,6 +15,11 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "build.gradle" }}
           - v1-dependencies-
+      - attach_workspace:
+          at: ~/social-network
+      - persist_to_workspace:
+          root: .
+          paths: *
 
   bundle_dependencies:
       docker:
@@ -24,6 +29,8 @@ jobs:
         JVM_OPTS: -Xmx3200m
         TERM: dumb
       steps:
+        - attach_workspace:
+            at: ~/social-network
         - run: pwd && ls -lisah
         - run: ./gradlew dependencies
         - save_cache:
@@ -39,6 +46,8 @@ jobs:
         JVM_OPTS: -Xmx3200m
         TERM: dumb
       steps:
+        - attach_workspace:
+            at: ~/social-network
         - run: ./gradlew test --tests \*Should
 
   acceptance_test:

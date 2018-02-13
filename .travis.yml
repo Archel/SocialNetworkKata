@@ -1,4 +1,8 @@
 language: java
+jdk:
+  - oraclejdk9
+  - openjdk9
+install: true
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -6,3 +10,14 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+stages:
+  - build
+  - unit-test
+#  - acceptance-test
+jobs:
+  - stage: build
+    script: gradle assemble
+  - stage: unit-test
+    script: gradle test
+#  - stage: acceptance-test
+#    script: gradle acceptance-test

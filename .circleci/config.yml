@@ -19,7 +19,7 @@ jobs:
           at: ~/social-network
       - persist_to_workspace:
           root: .
-          paths: ~/social-network
+          paths: ./*
 
   bundle_dependencies:
       docker:

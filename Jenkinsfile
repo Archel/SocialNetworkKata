@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Archel/SocialNetworkKata.git', branch: 'master'
+                checkout scm
             }
         }
         stage('Build') {
